@@ -1,5 +1,5 @@
 import React from 'react'
-import {FC, useState, useEffect} from "react";
+import {FC, useEffect} from "react";
 import './LocationSearch.scss';
 import { City } from '../../model/Weather';
 import cities from '../../data/cities-fr.json';
