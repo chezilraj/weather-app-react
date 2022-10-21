@@ -17,7 +17,7 @@ export const LocationSearch: FC<LocationSearchProps> = ({onSearch}) => {
 
     useEffect(() => {
         addLocation(defaultValue)
-      }, []);
+      },);
 
     return (
         
