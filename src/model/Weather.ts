@@ -1,32 +1,17 @@
-export interface Coordinates {
-    lon: number;
+export interface City {
+    id: number;
+    nm: string;
     lat: number;
+    lon: number;
 }
-
-export interface WeatherLocation {
-    coord: Coordinates;
-    id: number;
+export interface WeatherData {
     name: string;
+    main: {
+        temp: number;
+    }
 }
-
-export interface WeatherConditions {
-    id: number;
-    main: string;
-    description: string;
-    icon: string;
-}
-
-export interface MainWeatherData {
-    temp: number;
-    feels_like: number;
-    temp_min: number;
-    temp_max: number;
-    pressure: number;
-    humidity: number;
-}
-
-export interface Weather {
-    weather: WeatherConditions[];
-    main: MainWeatherData;
-    dt: number;
+export interface WeatherForecast {
+    weather: any;
+    main: any;
+    list: []
 }

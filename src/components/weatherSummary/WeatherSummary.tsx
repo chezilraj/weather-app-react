@@ -1,59 +1,33 @@
-import React, { FC, useEffect, useState } from "react";
-import { Weather, WeatherLocation } from "../../model/Weather";
-import { readForecast, readWeather } from "../../services/WeatherService";
+import React, { FC } from "react";
+import { WeatherData, WeatherForecast } from "../../model/Weather";
 import './WeatherSummary.scss';
 
 interface WeatherSummaryProps {
-    location: WeatherLocation | null;
+    weather: WeatherData | null;
+    forecast: WeatherForecast[] | null;
 }
 
-export const WeatherSummary: FC<WeatherSummaryProps> = ({location}) => {
-    // const [weather, setWeather] = useState<Weather | null>(null);
-    // const [forecast, setForecast] = useState<Weather[] | null>(null);
-
-    // useEffect(() => {
-    //     (async function () {
-    //         if (location) {
-    //             const [weather, forecast] = await Promise.all([
-    //                 readWeather(location.id),
-    //                 readForecast(location.id)
-    //             ]);
-    //             setWeather(weather);
-    //             setForecast(forecast)
-    //             }
-    //     })();
-    // }, [location]);
-
-    // if (!location || !weather || !forecast) return null;
-
+export const WeatherSummary: FC<WeatherSummaryProps> = ({weather, forecast}) => {
     return (
         <div className='weather-summary'>
             <h4 className="weather-summary__city">
-            ABBEVILLE
+            { weather?.name }
             </h4>
             <div className="weather-summary__temperature">
             <i className="wi wi-icon-802"></i>
-            <span>2</span>
+            <span>{ weather?.main.temp } { weather && <sup>&#176;</sup> }</span>
             </div>
             <div className="weather-summary__future">
-                <div className="future-day">
-                    <p className="day">Tue</p>
-                    <span className="icon"><i className="wi wi-icon-802"></i></span>
-                    <span className="temp-max">7</span>
-                    <span className="temp-min">3</span>
-                </div>
-                <div className="future-day">
-                    <p className="day">Wed</p>
-                    <span className="icon"><i className="wi wi-icon-802"></i></span>
-                    <span className="temp-max">7</span>
-                    <span className="temp-min">3</span>
-                </div>
-                <div className="future-day">
-                    <p className="day">Thu</p>
-                    <span className="icon"><i className="wi wi-icon-802"></i></span>
-                    <span className="temp-max">7</span>
-                    <span className="temp-min">3</span>
-                </div>
+                {
+                    forecast && forecast.map((day) => (
+                        <div className="future-day">
+                            <p className="day">Tue</p>
+                            <span className="icon"><i className={`wi wi-icon-${day?.weather[0].id}`}></i></span>
+                            <span className="temp-max">{day?.main.temp_max}</span>
+                            <span className="temp-min">{day?.main.temp_min}</span>
+                        </div>
+                    ))
+                }
             </div>
         </div>
     );

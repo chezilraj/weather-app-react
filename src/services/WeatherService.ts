@@ -1,15 +1,11 @@
-import {Weather, WeatherLocation} from '../model/Weather';
+import { WeatherData, WeatherForecast } from '../model/Weather';
 
 const key: string = '44668a3007eb39fd39b5e748a2492187';
-if (key === undefined) {
-  throw new Error('No Open Weather API Key defined - ensure you set a variable called REACT_APP_OPEN_WEATHER_API_KEY')
-}
+const apiKey = `appid=${key}`
+const endpoint = 'https://api.openweathermap.org/data/2.5';
 
-const keyQuery = `appid=${key}`
-const server = 'https://api.openweathermap.org/data/2.5';
-
-export async function searchLocation(term: string): Promise<WeatherLocation | undefined> {
-  const result = await fetch(`${server}/weather?lat=44.34&lon=10.99&${keyQuery}`);
+export async function searchLocation(lat: number, lon: number): Promise<WeatherData | undefined> {
+  const result = await fetch(`${endpoint}/weather?lat=${lat}&lon=${lon}&units=metric&${apiKey}`);
 
   if (result.status === 404) return undefined;
   if (result.status !== 200) throw new Error('Failed to read location data');
@@ -17,20 +13,8 @@ export async function searchLocation(term: string): Promise<WeatherLocation | un
   return await result.json();
 }
 
-export async function readWeather(locationId: number): Promise<Weather> {
-  const current = await fetch(`${server}/weather?id=${locationId}&${keyQuery}&units=metric`);
-
-  if (current.status !== 200) throw new Error('Failed to read location data');
-
-  return await current.json();
-}
-
-export function getIconUrl(code: string): string {
-  return `http://openweathermap.org/img/wn/${code}.png`;
-}
-
-export async function readForecast(locationId: number): Promise<Weather[]> {
-  const forecast = await fetch(`${server}/forecast?id=${locationId}&${keyQuery}&units=metric&cnt=8`);
+export async function readForecast(lat: number, lon: number): Promise<WeatherForecast[]> {
+  const forecast = await fetch(`${endpoint}/forecast?lat=${lat}&lon=${lon}&units=metric&cnt=3&${apiKey}`);
 
   if (forecast.status !== 200) throw new Error('Failed to read location data');
 

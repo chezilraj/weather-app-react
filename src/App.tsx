@@ -1,37 +1,33 @@
 import React, {FC, useState} from 'react';
-
-
 import { LocationSearch } from './components/locationSearch/LocationSearch';
-
-import {WeatherLocation} from './model/Weather';
-import {searchLocation} from "./services/WeatherService"
+import {searchLocation, readForecast} from "./services/WeatherService"
 import { WeatherSummary } from './components/weatherSummary/WeatherSummary';
+import {WeatherData, WeatherForecast, City} from './model/Weather';
 
 const App: FC = () => {
 
-  const [currentLocation] = useState<WeatherLocation | null>(null);
+  const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
+  const [forecastData, setForecastData] = useState<WeatherForecast[] | null>(null);
 
-  let addLocation = async (term: string) => {
-    alert()
+  let addLocation = async (location: City | null) => {
+    if(location){
+      const latitude = location?.lat
+      const longitude = location?.lon
+      const currentWeather = await searchLocation(latitude, longitude);
+      const forecastWeather = await readForecast(latitude, longitude);
+      if(currentWeather){
+        setWeatherData(currentWeather)
+        setForecastData(forecastWeather)
+      }
+    }
   };
 
   return (
     <div className="container">
       <div className='weather'>
           <LocationSearch  onSearch={addLocation}/>
-          <WeatherSummary location={currentLocation} />
-      
-      {/* <h1>Weather App</h1>
-      <LocationSearch onSearch={addLocation}/> 
-      <ErrorAlert message={error}/>
-      <WarningAlert message={warning}/>
-      <LocationTable 
-        locations={locations}
-        current={currentLocation}
-        onSelect={location => setCurrentLocation(location)}
-      />
-      <WeatherSummary location={currentLocation}/> */}
-    </div>
+          <WeatherSummary weather={weatherData} forecast={forecastData} />
+      </div>
     </div>
   );
 }
