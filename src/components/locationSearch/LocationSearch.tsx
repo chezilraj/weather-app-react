@@ -17,7 +17,8 @@ export const LocationSearch: FC<LocationSearchProps> = ({onSearch}) => {
 
     useEffect(() => {
         addLocation(defaultValue)
-      },);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      }, []);
 
     return (
         
