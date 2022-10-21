@@ -8,16 +8,21 @@ const App: FC = () => {
 
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
   const [forecastData, setForecastData] = useState<WeatherForecast[] | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   let addLocation = async (location: City | null) => {
     if(location){
       const latitude = location?.lat
       const longitude = location?.lon
+      setLoading(true)
       const currentWeather = await searchLocation(latitude, longitude);
       const forecastWeather = await readForecast(latitude, longitude);
       if(currentWeather){
         setWeatherData(currentWeather)
         setForecastData(forecastWeather)
+      }
+      if(currentWeather && forecastWeather){
+        setLoading(false)
       }
     }
   };
@@ -25,8 +30,12 @@ const App: FC = () => {
   return (
     <div className="container">
       <div className='weather'>
-          <LocationSearch  onSearch={addLocation}/>
+       <LocationSearch onSearch={addLocation} />
+        { loading ? 
+          <div className="loader"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div> :
           <WeatherSummary weather={weatherData} forecast={forecastData} />
+        }
+
       </div>
     </div>
   );

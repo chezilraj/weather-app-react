@@ -10,17 +10,21 @@ interface WeatherSummaryProps {
 export const WeatherSummary: FC<WeatherSummaryProps> = ({weather, forecast}) => {
     return (
         <div className='weather-summary'>
+            {weather && 
             <h4 className="weather-summary__city">
             { weather?.name }
             </h4>
+            }
             <div className="weather-summary__temperature">
+            {weather && 
             <i className="wi wi-icon-802"></i>
+            }
             <span>{ weather?.main.temp } { weather && <sup>&#176;</sup> }</span>
             </div>
             <div className="weather-summary__future">
                 {
-                    forecast && forecast.map((day) => (
-                        <div className="future-day">
+                    forecast && forecast.map((day, index) => (
+                        <div className="future-day" key={index}>
                             <p className="day">Tue</p>
                             <span className="icon"><i className={`wi wi-icon-${day?.weather[0].id}`}></i></span>
                             <span className="temp-max">{day?.main.temp_max}</span>

@@ -1,5 +1,5 @@
 import React from 'react'
-import {FC, useState} from "react";
+import {FC, useState, useEffect} from "react";
 import './LocationSearch.scss';
 import { City } from '../../model/Weather';
 import cities from '../../data/cities-fr.json';
@@ -8,13 +8,16 @@ interface LocationSearchProps {
 }
 
 export const LocationSearch: FC<LocationSearchProps> = ({onSearch}) => {
-    const [locationSearch, setLocationSearch] = useState<City | null>(null);
+    const defaultValue =  3038789;
   
     const addLocation = (locationId: number) => {
         const selectedCity = cities.filter((city) => city.id === locationId)
-        setLocationSearch(selectedCity[0])
-        onSearch(locationSearch);
+        onSearch(selectedCity[0]);
     };
+
+    useEffect(() => {
+        addLocation(defaultValue)
+      }, []);
 
     return (
         

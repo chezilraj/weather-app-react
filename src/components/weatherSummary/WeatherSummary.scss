@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 
   &__city {
     max-width: calc(100% - 60px);
